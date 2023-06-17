@@ -1,7 +1,7 @@
 from psycopg2 import ProgrammingError
-from sqlalchemy import Column, DateTime, Float, Integer, String, func
+from sqlalchemy import Column, DateTime, Integer, String, func
 
-from db import Base, SessionLocal
+from core.db import Base, SessionLocal
 
 
 class Post(Base):
@@ -20,8 +20,8 @@ def create_post(title: str, content: str, author: str):
         session.add(post)
         try:
             session.commit()
-        except ProgrammingError:
-            return None
+        except ProgrammingError as e:
+            raise ProgrammingError('Incorrect data was passed')
     return post
 
 
@@ -38,18 +38,19 @@ def get_post(post_id: int):
             'author': post.author
         }
         return post_data
+    raise ProgrammingError('Post not found')
 
 
 def update_post(post_id: int, title: str, content: str):
     with SessionLocal() as session:
         post = session.query(Post).get(post_id)
 
-    if post:
-        post.title = title if title else post.title
-        post.content = content if content else post.content
-        session.commit()
-
-    return post
+        if post:
+            post.title = title if title else post.title
+            post.content = content if content else post.content
+            session.commit()
+            return post
+    raise ProgrammingError('Post not found')
 
 
 def delete_post(post_id):
@@ -59,4 +60,4 @@ def delete_post(post_id):
             session.delete(post)
             session.commit()
             return 1
-    return 0
+    raise ProgrammingError('Post not found')

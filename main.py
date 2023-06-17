@@ -1,5 +1,5 @@
 import blogging_platform as bp
-from db import Base, engine
+from core.db import Base, engine
 
 
 if __name__ == "__main__":
@@ -18,10 +18,12 @@ if __name__ == "__main__":
     )
 
     print(bp.get_post(post1.id))
+    print(bp.get_post(post2.id))
 
-    update_post = bp.update_post(
-        post1.id, "Wow, look at this", "New Sadow Legends")
+    bp.update_post(
+        post1.id, "Wow, look at this, now!!!", "Even newer legends!!!")
 
     print(bp.get_post(post1.id))
 
     bp.delete_post(1)
+    print(bp.get_post(post1.id))  # None
