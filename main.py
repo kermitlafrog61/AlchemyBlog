@@ -1,12 +1,6 @@
 import blogging_platform as bp
 from db import Base, engine
 
-"""
-12. Извлеките и выведите на экран конкретную запись из блога с использованием функции get_post() в main.py.
-13. Обновите заголовок и содержимое записи блога с использованием функции update_post() в main.py.
-14. Удалите запись из блога с использованием функции delete_post() в main.py.
-"""
-
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
